@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿    <!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -80,32 +80,36 @@
                 <ul class="navbar-nav mb-1 ml-auto">
                     <div class="dropdown">
                     <li class="nav-item account" type="button" class="btn dropdown" data-toggle="dropdown">
-                        <a asp-controller="Uses" asp-action="index" class="btn btn-secondary rounded-circle">
+                        <a asp-controller="User" asp-action="index" class="btn btn-secondary rounded-circle">
                             <i class="fa fa-user"></i>
                         </a>
-                        <a asp-controller="User" asp-action="index" class="nav-link text-dark text-uppercase" href="#" style="display:inline-block">
+                        <a asp-controller="User" asp-action="index" class="nav-link text-dark text-uppercase" style="display:inline-block">
                             Tài
                             khoản
                         </a>
                     </li>
+
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item nutdangky text-center mb-2" href="#" data-toggle="modal"
-                           data-target="#formdangky">Đăng ký</a>
-                        <a class="dropdown-item nutdangnhap text-center" href="#" data-toggle="modal"
-                           data-target="#formdangnhap">Đăng nhập</a>
+
+                        <!-- Register Đăng ký -->
+                        <a asp-controller="Accounts" asp-action="Register" class="dropdown-item nutdangnhap text-center" style="margin-bottom:5px;">Đăng ký</a>
+                        <!-- Login Đăng Nhập -->
+                        <a asp-controller="Accounts" asp-action="Login" class="dropdown-item nutdangnhap text-center">Đăng nhập</a>
                     </div>
             </div>
+
+            <!-- Cart Giỏ Hàng-->
             <li class="nav-item giohang">
                 <a asp-controller="Cart" asp-action="index" class="btn btn-secondary rounded-circle">
                     <i class="fa fa-shopping-cart"></i>
-                    <div class="cart-amount">0</div>
                 </a>
-                <a  asp-controller="Cart" asp-action="index" class="nav-link text-dark giohang text-uppercase"
+               <a  asp-controller="Cart" asp-action="index" class="nav-link text-dark giohang text-uppercase"
                    style="display:inline-block">
-                    Giỏ
-                    Hàng
+                    Giỏ Hàng
                 </a>
             </li>
+
+
             </ul>
         </div>
         </div>

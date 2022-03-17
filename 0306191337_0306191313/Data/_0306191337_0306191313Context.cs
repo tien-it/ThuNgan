@@ -15,7 +15,6 @@ namespace _0306191337_0306191313.Data
         }
 
         public DbSet<Account> Accounts { get; set; }
-
         public DbSet<Cart> Carts { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<Invoice> Invoices { get; set; }

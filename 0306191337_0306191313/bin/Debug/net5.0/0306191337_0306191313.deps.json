@@ -33,6 +33,7 @@
     ".NETCoreApp,Version=v5.0": {
       "0306191337_0306191313/1.0.0": {
         "dependencies": {
+          "Microsoft.EntityFrameworkCore": "5.0.12",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.12",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.12",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",

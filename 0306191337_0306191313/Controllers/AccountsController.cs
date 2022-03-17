@@ -24,6 +24,53 @@ namespace _0306191337_0306191313.Controllers
             _webHostEnvironment = WebHostEnvironment;
         }
 
+        //đăng ký 
+        public ActionResult Register()
+        {
+            return RedirectToAction("Login", "Accounts");
+        }
+
+        //POST: Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(string Username, string Password, string Email, string Phone, string Address, string Fullname,  IFormFile ImageAvata)
+        {
+            Account acc = _context.Accounts.FirstOrDefault(c => c.Username == Username && c.Password == Password);
+            if (acc == null)
+            {
+                acc = new Account();
+                acc.Username = Username;
+                acc.Password = Password;
+                acc.Email = Email;
+                acc.Phone = Phone;
+                acc.Address = Address;
+                acc.FullName = Fullname;
+                if (ImageAvata != null)
+                {
+                    var filename = Guid.NewGuid() + Path.GetExtension(ImageAvata.FileName);
+                    var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "img", "user_images");
+                    var filePath = Path.Combine(uploadPath, filename);
+
+                    using (FileStream fs = System.IO.File.Create(filePath))
+                    {
+                        ImageAvata.CopyTo(fs);
+                        fs.Flush();
+                    }
+                    acc.Avatar = filename;
+                }
+                acc.Status = true;
+                acc.IsAdmin = false;
+                _context.Add(acc);
+                _context.SaveChanges();
+            }
+            else
+            {
+                //return RedirectToAction("Login", "Accounts");
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
         // GET: Accounts
         public async Task<IActionResult> Index()
         {
@@ -86,44 +133,43 @@ namespace _0306191337_0306191313.Controllers
             }
             return View(account);
         }
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
+        //public IActionResult Login()
+        //{
+        //    return View();
+        //}
+       // [HttpPost]
         //[ValidateAntiForgeryToken]
         public IActionResult Login(string Username, string Password)
         {
-            Account account = _context.Accounts.Where(a => a.Username == Username && a.Password == Password && a.IsAdmin == true).FirstOrDefault();
+            Account account = _context.Accounts.Where(a => a.Username == Username && a.Password == Password).FirstOrDefault();
+
             if (account != null)
             {
                 CookieOptions cookieOptions = new CookieOptions()
                 {
                     Expires = DateTime.Now.AddDays(2)
                 };
-                // Cookies
+
+                // Tạo Cookies
                 HttpContext.Response.Cookies.Append("AccountID", account.Id.ToString(), cookieOptions);
                 HttpContext.Response.Cookies.Append("AccountUsername", account.Username.ToString());
-                return RedirectToAction("Index", "Accounts");
-                //  tao section
+
+                //  Tạo section
                 //HttpContext.Session.SetInt32("AccountID", account.Id);
                 //HttpContext.Session.SetString("AccountUsername", account.Username);
                 //return RedirectToAction("Index", "Accounts");
+
+                if(account.IsAdmin ==true )
+                {
+                    return RedirectToAction("Index", "Accounts");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+
+                }
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-
-                //Account account1 = _context.Accounts.Where(a => a.Username == Username && a.Password == Password && a.IsAdmin != true).FirstOrDefault();
-                //if (account != null)
-
-                //{
-                //    
-                //    HttpContext.Response.Cookies.Append("AccountID", account1.Id.ToString());
-                //    HttpContext.Response.Cookies.Append("AccountUsername", account1.Username.ToString());
-                //    return RedirectToAction("Index", "Home");
-
-            }
+            return View(); 
         }
         //logout 
         [HttpPost]

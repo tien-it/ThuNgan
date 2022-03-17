@@ -12,7 +12,6 @@ namespace DOAN.Models
     public class Account
     {
         public int Id { get; set; }
-
         [DisplayName("Tên đăng nhập")]
         [Required(ErrorMessage = "{0} không được bỏ trống")]
         [StringLength(20, MinimumLength = 6, ErrorMessage = "{0} từ 6-20 kí tự")]
