@@ -50,6 +50,29 @@ namespace _0306191337_0306191313.Views
             return View(product);
         }
 
+
+
+        public async Task<IActionResult>Single_Product(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.ProductType)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+
+
+
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -73,16 +96,15 @@ namespace _0306191337_0306191313.Views
                     var filename = product.Id.ToString() + Path.GetExtension(product.ImageFile.FileName);
                     var uploadfile = Path.Combine(_webHostEnvironment.WebRootPath, "img", "product");
                     var filePath = Path.Combine(uploadfile, filename);
+
                     using(FileStream fs= System.IO.File.Create(filePath))
                     {
                         product.ImageFile.CopyTo(fs);
                         fs.Flush();
-
                     }
                     product.Image = filename;
                     _context.Products.Update(product);
                     await _context.SaveChangesAsync();
-
                 }    
                 return RedirectToAction(nameof(Index));
             }
@@ -112,7 +134,7 @@ namespace _0306191337_0306191313.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SKU,Name,Description,Price,Stock,ProductTypeId,Image,Status")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SKU,Name,Description,Price,Stock,ProductTypeId, ImageFile,Image,Status")] Product product)
         {
             if (id != product.Id)
             {
@@ -123,8 +145,22 @@ namespace _0306191337_0306191313.Views
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    if (product.ImageFile != null)
+                    {
+                        var filename = product.Id.ToString() + Guid.NewGuid() + Path.GetExtension(product.ImageFile.FileName);
+                        var uploadfile = Path.Combine(_webHostEnvironment.WebRootPath, "img", "product");
+                        var filePath = Path.Combine(uploadfile, filename);
+
+                        using (FileStream fs = System.IO.File.Create(filePath))
+                        {
+                            product.ImageFile.CopyTo(fs);
+                            fs.Flush();
+                        }
+                        product.Image = filename;
+                        _context.Products.Update(product);
+                        await _context.SaveChangesAsync();
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

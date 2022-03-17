@@ -1,64 +1,51 @@
-﻿
+﻿@model IEnumerable<DOAN.Models.Cart>
 <!DOCTYPE html>
 <html lang="vi">
 
 <body>
-  
-
-
-
     <!-- giao diện giỏ hàng  -->
     <section class="content my-3">
         <div class="container">
             <div class="cart-page bg-white">
                 <div class="row">
-                    <!-- giao diện giỏ hàng khi không có item  -->
-                    <div class="col-12 cart-empty d-none">
-                        <div class="py-3 pl-3">
-                            <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN <span>(0 sản phẩm)</span></h6>
-                            <div class="cart-empty-content w-100 text-center justify-content-center">
-                                <img src="images/shopping-cart-not-product.png" alt="shopping-cart-not-product">
-                                <p>Chưa có sản phẩm nào trong giở hàng của bạn</p>
-                                <a href="index.html" class="btn nutmuathem mb-3">Mua thêm</a>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- giao diện giỏ hàng khi có hàng (phần comment màu xanh bên dưới là phần 2 sản phẩm trong giỏ hàng nhưng giờ đã demo bằng jquery) -->
                     <div class="col-md-8 cart">
                         <div class="cart-content py-3 pl-3">
-                             <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN <span>(1 sản phẩm)</span></h6>
-                            <div class="cart-list-items">
-                                <div class="cart-item d-flex">
-                                    <a href="product-item.html" class="img">
-                                        
-                                        <img src="~/images/lap-ke-hoach-kinh-doanh-hieu-qua.jpg" />
-                                    </a>
-                                    <div class="item-caption d-flex w-100">
-                                        <div class="item-info ml-3">
-                                            <a href="product-item.html" class="ten">Lập kế hoạch kinh doanh hiệu quả</a>
-                                            <div class="soluong d-flex">
-                                                <div class="input-number input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text btn-spin btn-dec">-</span>
-                                                    </div>
-                                                    <input type="text" value="1" class="soluongsp  text-center">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text btn-spin btn-inc">+</span>
+                            <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN <span>( sản phẩm)</span></h6>
+                            @foreach (var item in Model)
+                            {
+                                <div class="cart-list-items">
+                                    <div class="cart-item d-flex">
+                                        <a href="product-item.html" class="img">
+                                            <img src="~/img/product/@item.Product.Image" />
+                                        </a>
+                                        <div class="item-caption d-flex w-100">
+                                            <div class="item-info ml-3">
+                                                <a href="product-item.html" class="ten">@item.Product.Name</a>
+                                                <div class="soluong d-flex">
+                                                    <div class="input-number input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text btn-spin btn-dec">-</span>
+                                                        </div>
+                                                        <input type="text" value="1" class="soluongsp  text-center">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text btn-spin btn-inc">+</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="item-price ml-auto d-flex flex-column align-items-end">
-                                            <div class="giamoi">111.200 ₫</div>
-                                            <div class="giacu">139.000 ₫</div>
-                                            <span class="remove mt-auto"><i class="far fa-trash-alt"></i></span>
+                                            <div class="item-price ml-auto d-flex flex-column align-items-end">
+                                                <div class="giamoi">@item.Product.Price ₫</div>
+                                                <div class="giacu">@{ var x = @item.Product.Price;} @x ₫</div>
+                                                <span class="remove mt-auto"><i class="far fa-trash-alt"></i></span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <hr>
                                 </div>
-                                <hr>
-                            </div> 
-                             <div class="row">
+
+                               }
+                            <div class="row">
                                 <div class="col-md-3">
                                     <a href="index.html" class="btn nutmuathem mb-3">Mua thêm</a>
                                 </div>
@@ -66,7 +53,7 @@
                                     <div class="tonggiatien">
                                         <div class="group d-flex justify-content-between">
                                             <p class="label">Tạm tính:</p>
-                                            <p class="tamtinh">328.000 ₫</p>
+                                            <p class="tamtinh">@ViewBag.CartsTotal ₫</p>
                                         </div>
                                         <div class="group d-flex justify-content-between">
                                             <p class="label">Giảm giá:</p>
@@ -82,14 +69,14 @@
                                         </div>
                                         <div class="group d-flex justify-content-between align-items-center">
                                             <strong class="text-uppercase">Tổng cộng:</strong>
-                                            <p class="tongcong">328.000 ₫</p>
+                                            <p class="tongcong">@ViewBag.CartsTotal  ₫</p>
                                         </div>
                                         <small class="note d-flex justify-content-end text-muted">
-                                            (Giá đã bao gồm VAT)
+                                            (Giá đã bao gồm VAT )
                                         </small>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
 
@@ -407,12 +394,6 @@
             </div>
         </div>
     </section>
-  
-
-    <!-- nut cuon len dau trang -->
-   
-
-
 </body>
 
 </html>

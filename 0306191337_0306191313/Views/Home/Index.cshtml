@@ -1,4 +1,5 @@
-﻿@{
+﻿@model   IEnumerable<DOAN.Models.Product>
+@{
     ViewData["Title"] = "Home Page";
 }
 @{
@@ -278,232 +279,37 @@
                     </div>
                 </div>
                 <div class="khoisanpham" style="display: flex; flex-wrap: wrap; ">
-                    <!-- 1 san pham -->
-                    <div style="width:20%" class="card">
-                        <a asp-controller="single_product" asp-action="Detail" class="motsanpham"
-                            style="text-decoration: none; color: black;" data-toggle="tooltip" data-placement="bottom"
-                            title="Lập Kế Hoạch Kinh Doanh Hiệu Quả">
-                            <img class="card-img-top anh" src="~/images/lap-ke-hoach-kinh-doanh-hieu-qua.jpg"
-                                 alt="lap-ke-hoach-kinh-doanh-hieu-qua">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">Lập Kế Hoạch Kinh Doanh Hiệu Quả</h3>
-                                <small class="tacgia text-muted">Brian Finch</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
+                    <!-- Danh Sach san pham -->
+                    @foreach (var item in Model)
+                    {
+                        <div style="width:20%" class="card">
+                            <a asp-controller="Products" asp-action="Single_Product" asp-route-id="@item.Id" class="motsanpham"
+                               style="text-decoration: none; color: black;" data-toggle="tooltip" data-placement="bottom"
+                               title="Lập Kế Hoạch Kinh Doanh Hiệu Quả">
+                                <img class="card-img-top anh" src="~/img/product/@item.Image"
+                                     alt="lap-ke-hoach-kinh-doanh-hieu-qua">
+                                <div class="card-body noidungsp mt-3">
+                                    <h3 class="card-title ten">@item.Name</h3>
+                                    <small class="tacgia text-muted">@item.Description</small>
+                                    <div class="gia d-flex align-items-baseline">
+                                        <div class="giamoi">@{ var b = @item.Price / 1000; var c = @item.Price % 1000;}@b.@c ₫</div>
+                                        <div class="giacu text-muted">@{ var d = b * 1.2; var e = c; }@d.@e  ₫</div>
+                                        <div class="sale">-20%</div>
+                                    </div>
+                                    <div class="danhgia">
+                                        <ul class="d-flex" style="list-style: none;">
+                                            <li class="active"><i class="fa fa-star"></i></li>
+                                            <li class="active"><i class="fa fa-star"></i></li>
+                                            <li class="active"><i class="fa fa-star"></i></li>
+                                            <li class="active"><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><span class="text-muted">0 nhận xét</span></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div style="width:20%" class="card">
-                        <a href="Ma-bun-luu-manh-va-nhung-cau-chuyen-khac-cua-nguyen-tri.html" class="motsanpham"
-                           style="text-decoration: none; color: black;" data-toggle="tooltip" data-placement="bottom"
-                           title="Ma Bùn Lưu Manh Và Những Câu Chuyện Khác Của Nguyễn
-                        Trí">
-                            <img   class="card-img-top anh" src="~/images/ma-bun-luu-manh.jpg" alt="ma-bun-luu-manh">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">
-                                    Ma Bùn Lưu Manh Và Những Câu Chuyện Khác Của Nguyễn
-                                    Trí
-                                </h3>
-                                <small class="tacgia text-muted">Nguyễn Trí</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">68.000 ₫</div>
-                                    <div class="giacu text-muted">85.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div style="width:20%" class="card">
-                        <a href="#" class="motsanpham" style="text-decoration: none; color: black;"
-                           data-toggle="tooltip" data-placement="bottom"
-                           title="Bank 4.0 - Giao dịch mọi nơi, không chỉ là ngân hàng">
-                            <img  class="card-img-top anh" src="~/images/bank-4.0.jpg" alt="bank-4.0">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">
-                                    Bank 4.0 - Giao dịch mọi nơi, không chỉ là ngân hàng
-                                </h3>
-                                <small class="tacgia text-muted">Brett King</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div style="width:20%" class="card">
-                        <a href="#" class="motsanpham" style="text-decoration: none; color: black;"
-                           data-toggle="tooltip" data-placement="bottom" title="Bộ Sách 500 Câu Chuyện Đạo Đức - Những Câu Chuyện
-                        Tình Thân (Bộ 8 Cuốn)">
-                            <img class="card-img-top anh" src="~/images/bo-sach-500-cau-chuyen-dao-duc.jpg"
-                                 alt="bo-sach-500-cau-chuyen-dao-duc">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">
-                                    Bộ Sách 500 Câu Chuyện Đạo Đức - Những Câu Chuyện
-                                    Tình Thân (Bộ 8 Cuốn)
-                                </h3>
-                                <small class="tacgia text-muted">Nguyễn Hạnh - Trần Thị Thanh Nguyên</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div   class="card">
-                        <a href="#" class="motsanpham" style="text-decoration: none; color: black;"
-                           data-toggle="tooltip" data-placement="bottom"
-                           title="Lịch Sử Ung Thư - Hoàng Đế Của Bách Bệnh">
-                            <img class="card-img-top anh" src="~/images/ung-thu-hoang-de-cua-bach-benh.jpg"
-                                 alt="ung-thu-hoang-de-cua-bach-benh">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">Lịch Sử Ung Thư - Hoàng Đế Của Bách Bệnh</h3>
-                                <small class="tacgia text-muted">Siddhartha Mukherjee</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div style="width:20%" class="card">
-                        <a href="#" class="motsanpham" style="text-decoration: none; color: black;"
-                           data-toggle="tooltip" data-placement="bottom"
-                           title="Cuốn Sách Khám Phá: Trời Đêm Huyền Diệu">
-                            <img class="card-img-top anh" src="~/images/troi-dem-huyen-dieu.jpg"
-                                 alt="troi-dem-huyen-dieu">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">Cuốn Sách Khám Phá: Trời Đêm Huyền Diệu</h3>
-                                <small class="tacgia text-muted">Disney Learning</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div style="width:20%" class="card">
-                        <a href="#" class="motsanpham" style="text-decoration: none; color: black;"
-                           data-toggle="tooltip" data-placement="bottom"
-                           title="Bộ Sách Những Câu Chuyện Cho Con Thành Người Tử Tế (Bộ 5 Cuốn)">
-                            <img class="card-img-top anh"
-                                 src="~/images/bo-sach-nhung-cau-chuyen-cho-con-thanh-nguoi-tu-te.jpg"
-                                 alt="bo-sach-nhung-cau-chuyen-cho-con-thanh-nguoi-tu-te">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">
-                                    Bộ Sách Những Câu Chuyện Cho Con Thành Người Tử Tế (Bộ 5
-                                    Cuốn)
-                                </h3>
-                                <small class="tacgia text-muted">Nhiều Tác Giả</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div style="width:20%" class="card">
-                        <a href="#" class="motsanpham" style="text-decoration: none; color: black;"
-                           data-toggle="tooltip" data-placement="bottom" title="Lịch Sử Thế Giới">
-                            <img class="card-img-top anh" src="~/images/lich-su-the-gioi.jpg" alt="lich-su-the-gioi">
-                            <div class="card-body noidungsp mt-3">
-                                <h3 class="card-title ten">Lịch Sử Thế Giới</h3>
-                                <small class="tacgia text-muted">Nam Phong tùng thư - Phạm Quỳnh chủ nhiệm</small>
-                                <div class="gia d-flex align-items-baseline">
-                                    <div class="giamoi">111.200 ₫</div>
-                                    <div class="giacu text-muted">139.000 ₫</div>
-                                    <div class="sale">-20%</div>
-                                </div>
-                                <div class="danhgia">
-                                    <ul class="d-flex" style="list-style: none;">
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li class="active"><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><span class="text-muted">0 nhận xét</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

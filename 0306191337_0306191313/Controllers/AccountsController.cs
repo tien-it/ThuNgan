@@ -65,8 +65,7 @@ namespace _0306191337_0306191313.Controllers
             }
             else
             {
-                //return RedirectToAction("Login", "Accounts");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Accounts");
             }
 
             return RedirectToAction("Index", "Home");
@@ -145,19 +144,20 @@ namespace _0306191337_0306191313.Controllers
 
             if (account != null)
             {
-                CookieOptions cookieOptions = new CookieOptions()
-                {
-                    Expires = DateTime.Now.AddDays(2)
-                };
+                //CookieOptions cookieOptions = new CookieOptions()
+                //{
+                //    Expires = DateTime.Now.AddDays(2)
+                //};
 
                 // Tạo Cookies
-                HttpContext.Response.Cookies.Append("AccountID", account.Id.ToString(), cookieOptions);
-                HttpContext.Response.Cookies.Append("AccountUsername", account.Username.ToString());
+                //HttpContext.Response.Cookies.Append("AccountID", account.Id.ToString(), cookieOptions);
+                //HttpContext.Response.Cookies.Append("AccountUsername", account.Username.ToString());
 
-                //  Tạo section
-                //HttpContext.Session.SetInt32("AccountID", account.Id);
-                //HttpContext.Session.SetString("AccountUsername", account.Username);
-                //return RedirectToAction("Index", "Accounts");
+                //Tạo section
+                HttpContext.Session.SetInt32("id", account.Id);
+                HttpContext.Session.SetString("Username", account.Username);
+
+                return RedirectToAction("Index", "Accounts");
 
                 if(account.IsAdmin ==true )
                 {
