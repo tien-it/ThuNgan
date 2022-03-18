@@ -27,6 +27,10 @@ namespace _0306191337_0306191313.Controllers
         //đăng ký 
         public ActionResult Register()
         {
+            if (HttpContext.Session.Keys.Contains("Username"))
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("Username");
+            }
             return RedirectToAction("Login", "Accounts");
         }
 
@@ -73,12 +77,22 @@ namespace _0306191337_0306191313.Controllers
         // GET: Accounts
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.Keys.Contains("Username"))
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("Username");
+            }
+
             return View(await _context.Accounts.ToListAsync());
         }
 
         // GET: Accounts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.Keys.Contains("Username"))
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("Username");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -97,6 +111,11 @@ namespace _0306191337_0306191313.Controllers
         // GET: Accounts/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.Keys.Contains("Username"))
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("Username");
+            }
+
             return View();
         }
 
@@ -114,8 +133,8 @@ namespace _0306191337_0306191313.Controllers
                 await _context.SaveChangesAsync();
                 if (account.ImageAvata != null)
                 {
-                    var filename = account.Id.ToString() + Path.GetExtension(account.ImageAvata.FileName);
-                    var uploadfile = Path.Combine(_webHostEnvironment.WebRootPath, "img", "product");
+                    var filename = account.Id.ToString() + Guid.NewGuid() + Path.GetExtension(account.ImageAvata.FileName);
+                    var uploadfile = Path.Combine(_webHostEnvironment.WebRootPath, "img", "user_images");
                     var filePath = Path.Combine(uploadfile, filename);
                     using (FileStream fs = System.IO.File.Create(filePath))
                     {
@@ -140,20 +159,16 @@ namespace _0306191337_0306191313.Controllers
         //[ValidateAntiForgeryToken]
         public IActionResult Login(string Username, string Password)
         {
-            Account account = _context.Accounts.Where(a => a.Username == Username && a.Password == Password).FirstOrDefault();
+            if (HttpContext.Session.Keys.Contains("Username"))
+            {
+                ViewBag.UserName = HttpContext.Session.GetString("Username");
+            }
+
+            Account account = _context.Accounts.Where(a => a.Username == Username && a.Password == Password && a.Status ==true).FirstOrDefault();
 
             if (account != null)
             {
-                //CookieOptions cookieOptions = new CookieOptions()
-                //{
-                //    Expires = DateTime.Now.AddDays(2)
-                //};
 
-                // Tạo Cookies
-                //HttpContext.Response.Cookies.Append("AccountID", account.Id.ToString(), cookieOptions);
-                //HttpContext.Response.Cookies.Append("AccountUsername", account.Username.ToString());
-
-                //Tạo section
                 HttpContext.Session.SetInt32("id", account.Id);
                 HttpContext.Session.SetString("Username", account.Username);
 
@@ -172,11 +187,11 @@ namespace _0306191337_0306191313.Controllers
             return View(); 
         }
         //logout 
-        [HttpPost]
+       // [HttpPost]
         public IActionResult logout()
         {
-            HttpContext.Response.Cookies.Append("AccountID", "", new CookieOptions { Expires = DateTime.Now.AddDays(-1) });
-            HttpContext.Response.Cookies.Append("AccountUsername","", new CookieOptions { Expires = DateTime.Now.AddDays(-1) });
+
+            HttpContext.Session.Clear();
             return RedirectToAction("Index","Home");
         }
         // GET: Accounts/Edit/5
@@ -190,22 +205,6 @@ namespace _0306191337_0306191313.Controllers
             var account = await _context.Accounts.FindAsync(id);
             if (account == null)
             {
-                if (account.ImageAvata != null)
-                {
-                    var filename = account.Id.ToString() + Path.GetExtension(account.ImageAvata.FileName);
-                    var uploadfile = Path.Combine(_webHostEnvironment.WebRootPath, "img", "product");
-                    var filePath = Path.Combine(uploadfile, filename);
-                    using (FileStream fs = System.IO.File.Create(filePath))
-                    {
-                        account.ImageAvata.CopyTo(fs);
-                        fs.Flush();
-
-                    }
-                    account.Avatar = filename;
-                    _context.Accounts.Update(account);
-                    await _context.SaveChangesAsync();
-
-                }
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
@@ -216,7 +215,7 @@ namespace _0306191337_0306191313.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password,Email,Phone,Address,FullName,IsAdmin,Avatar,Status")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password,Email,Phone,Address,FullName,IsAdmin,ImageAvata ,Avatar,Status")] Account account)
         {
             if (id != account.Id)
             {
@@ -229,6 +228,24 @@ namespace _0306191337_0306191313.Controllers
                 {
                     _context.Update(account);
                     await _context.SaveChangesAsync();
+
+                    if (account.ImageAvata != null)
+                    {
+                        var filename = account.Id.ToString() + Guid.NewGuid() + Path.GetExtension(account.ImageAvata.FileName);
+                        var uploadfile = Path.Combine(_webHostEnvironment.WebRootPath, "img", "user_images");
+                        var filePath = Path.Combine(uploadfile, filename);
+                        using (FileStream fs = System.IO.File.Create(filePath))
+                        {
+                            account.ImageAvata.CopyTo(fs);
+                            fs.Flush();
+
+                        }
+                        account.Avatar = filename;
+
+                        _context.Accounts.Update(account);
+                        await _context.SaveChangesAsync();
+
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -245,10 +262,14 @@ namespace _0306191337_0306191313.Controllers
             }
             return View(account);
         }
+       
+
+
 
         // GET: Accounts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();

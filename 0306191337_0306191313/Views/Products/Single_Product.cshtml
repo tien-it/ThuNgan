@@ -61,20 +61,25 @@
                                         <li>Bao sách miễn phí (theo yêu cầu)</li>
                                     </ul>
                                 </div>
-                                <div class="soluong d-flex">
-                                    <label class="font-weight-bold">Số lượng: </label>
-                                    <div class="input-number input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text btn-spin btn-dec">-</span>
-                                        </div>
-                                        <input type="text" value="1" class="soluongsp  text-center">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text btn-spin btn-inc">+</span>
+
+                                <form class="form-inline ml-auto my-2 my-lg-0 mr-3" method="get">
+                                    <div class="soluong d-flex">
+                                        <label class="font-weight-bold">Số lượng: </label>
+                                        <div class="input-number input-group mb-3">
+                                            <input type="hidden" name="id" value="@Model.Id"/>
+                                            <input name="quantity" type="text" value="1" class="soluongsp  text-center">
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="input-group-append">
+                                        <button asp-controller="Carts" asp-action="Added" type="submit" class="btn" style="background-color: #CF111A; color: white;">
+                                            Chọn Mua
+                                        </button>
+                                    </div>
 
-                                <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" type="button" class="nutmua btn w-100 text-uppercase" style="color:red">Chọn mua</a>
+                                </form>
+
+
+
 
                                 <a class="huongdanmuahang text-decoration-none" href="#">
                                     (Vui lòng xem hướng dẫn mua

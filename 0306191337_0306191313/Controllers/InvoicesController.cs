@@ -140,6 +140,7 @@ namespace _0306191337_0306191313.Controllers
 
             return View(invoice);
         }
+
         public async Task<IActionResult> Search(string search)
         {
             ViewData["Get"] = search;
@@ -150,6 +151,7 @@ namespace _0306191337_0306191313.Controllers
             }
             return View(await accounts.AsNoTracking().ToListAsync());
         }
+
 
         // POST: Invoices/Delete/5
         [HttpPost, ActionName("Delete")]

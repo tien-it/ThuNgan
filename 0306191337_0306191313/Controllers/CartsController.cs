@@ -27,12 +27,64 @@ namespace _0306191337_0306191313.Controllers
             return View(await _0306191337_0306191313Context.ToListAsync());
         }
 
-        public IActionResult Add(int id)
+        public async Task<IActionResult> Del(int? id)
         {
-            return Add(id, 1);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cart = await _context.Carts
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cart == null)
+            {
+                return NotFound();
+            }
+            _context.Carts.Remove(cart);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("User_Cart", "Carts");
         }
+
+
+        public IActionResult Tang(int id)
+        {
+            string username = HttpContext.Session.GetString("Username");
+            int ids = _context.Accounts.FirstOrDefault(c => c.Username == username).Id;
+            Cart cart = _context.Carts.Include(c => c.Product).FirstOrDefault(c => c.Id == id && c.AccountId == ids);
+            if (cart.Product.Stock <= cart.Quantity)
+            {
+                cart.Quantity += 0;
+            }
+            else
+            {
+                cart.Quantity += 1;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("User_Cart", "Carts");
+        }
+        public IActionResult Giam(int id)
+        {
+            string username = HttpContext.Session.GetString("Username");
+            int ids = _context.Accounts.FirstOrDefault(c => c.Username == username).Id;
+            Cart cart = _context.Carts.FirstOrDefault(c => c.Id == id && c.AccountId == ids);
+            if (cart.Quantity == 1)
+            {
+                cart.Quantity = 1;
+            }
+            else
+            {
+                cart.Quantity -= 1;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("User_Cart", "Carts");
+        }
+
+
+
+
         public IActionResult Added(int id, int quantity)
         {
+
             return Add(id, quantity);
         }
         [HttpPost]
@@ -43,7 +95,7 @@ namespace _0306191337_0306191313.Controllers
 
             if (username is null)
             {
-                return RedirectToAction("index", "Home");
+                return RedirectToAction("Login", "Accounts");
             };
             int id = _context.Accounts.FirstOrDefault(c => c.Username == username).Id;
 
@@ -75,19 +127,6 @@ namespace _0306191337_0306191313.Controllers
             return RedirectToAction(nameof(User_Cart));
         }
         // <<< end thêm giỏ hàng
-        // kiểm tra số lượng giỏ hàng
-        private bool checkStock(string username)
-        {
-            List<Cart> cart = _context.Carts.Include(c => c.Product).Include(c => c.Account).Where(c => c.Account.Username == username).ToList();
-            foreach (Cart c in cart)
-            {
-                if (c.Product.Stock < c.Quantity)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
         //cart người dùng
         public async Task<IActionResult> User_Cart()
         {

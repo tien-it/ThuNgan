@@ -29,10 +29,6 @@ namespace _0306191337_0306191313.Controllers
             {
                 ViewBag.UserName = HttpContext.Session.GetString("Username");
             }
-            if (HttpContext.Session.Keys.Contains("id"))
-            {
-                ViewBag.id = HttpContext.Session.GetInt32("id");
-            }
             var lstProduct = _context.Products.Take(8);
             return View(await lstProduct.ToListAsync());
         }

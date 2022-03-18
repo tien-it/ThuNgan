@@ -24,20 +24,34 @@
                                                 <a href="product-item.html" class="ten">@item.Product.Name</a>
                                                 <div class="soluong d-flex">
                                                     <div class="input-number input-group mb-3">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text btn-spin btn-dec">-</span>
-                                                        </div>
-                                                        <input type="text" value="1" class="soluongsp  text-center">
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text btn-spin btn-inc">+</span>
-                                                        </div>
+
+                                                        <a asp-controller="Carts" asp-action="Giam"asp-route-id="@item.Id">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn-spin btn-dec">-</span>
+                                                            </div>
+                                                        </a>
+
+
+                                                        <input type="text" value="@item.Quantity" class="soluongsp  text-center">
+
+                                                        <a asp-controller="Carts" asp-action="Tang" asp-route-id="@item.Id">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text btn-spin btn-dec">+</span>
+                                                            </div>
+                                                        </a>
+
+
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="item-price ml-auto d-flex flex-column align-items-end">
                                                 <div class="giamoi">@item.Product.Price ₫</div>
-                                                <div class="giacu">@{ var x = @item.Product.Price;} @x ₫</div>
-                                                <span class="remove mt-auto"><i class="far fa-trash-alt"></i></span>
+                                                <div class="giacu">@{ var x = @item.Product.Price*1.2;} @x ₫</div>
+
+                                                <a style=" margin-top:10px; "asp-controller="Carts" asp-action="Del" asp-route-id="@item.Id">
+                                                    <span class="remove mt-auto"><i class="far fa-trash-alt"></i> Xóa</span>
+                                                </a>
+                                                
                                             </div>
                                         </div>
                                     </div>

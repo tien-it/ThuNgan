@@ -50,7 +50,21 @@ namespace _0306191337_0306191313.Views
             return View(product);
         }
 
+        public async Task<IActionResult> Search_User(string keyword = "")
+        {
+            if (keyword == null)
+            {
+                keyword = "";
+            }
+            var productList = _context.Products.Where(prod => prod.Name.Contains(keyword) || prod.ProductType.Name.Contains(keyword) || prod.Description.Contains(keyword));
 
+            if (productList is null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(await productList.ToListAsync());
+        }
 
         public async Task<IActionResult>Single_Product(int? id)
         {
